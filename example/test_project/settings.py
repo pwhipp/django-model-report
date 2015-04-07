@@ -18,15 +18,9 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
-     'default': {
+    'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'model_report',                      # Or path to database file if using sqlite3.
-        # 'USER': '',                      # Not used with sqlite3.
-        # 'PASSWORD': '',                  # Not used with sqlite3.
-        # 'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        # 'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-     }
- }
+        'NAME': join(PROJECT_ABSOLUTE_DIR, 'model_report.sqlite3')}}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -153,16 +147,3 @@ LOGGING = {
         },
     }
 }
-
-try:
-    from local_settings import *
-except Exception:
-    pass
-
-
-try:
-    # TO RUN LOCAL RUN: pip uninstall dj-database-url
-    import dj_database_url
-    DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
-except Exception:
-    pass
