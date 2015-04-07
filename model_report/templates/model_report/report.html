@@ -1,12 +1,14 @@
-{% extends base_template_name %}
+{% extends "base.html" %}
 {% load i18n %}
 
 {% block title %}{% trans "Report" %}: {{ report.get_title }}{% endblock %}
 {% block body_class %}report {{ report.slug }}{% endblock %}
 
+
 {% block head_extra %}
     {{ block.super }}
     <link href="{{ STATIC_URL }}model_report/css/datepicker.css" type="text/css" media="screen" rel="stylesheet" />
+    <style type="text/css">.ui-datepicker {font-size: 12px; } </style>
     <script src="{{ STATIC_URL }}model_report/js/jquery-1.6.2.min.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}model_report/js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
 
@@ -65,24 +67,56 @@
                 $(this).removeClass('expanded');
                 $(this).addClass('colapsed');
                 $(this).text('+');
-                $('.object_list_data').find('.'+$(this).attr('row')).addClass('row-hidden');
+                $('table.report').find('.'+$(this).attr('row')).addClass('row-hidden');
             }
             else {
                 $(this).addClass('expanded');
                 $(this).removeClass('colapsed');
                 $(this).text('-');
-                $('.object_list_data').find('.'+$(this).attr('row')).removeClass('row-hidden');
+                $('table.report').find('.'+$(this).attr('row')).removeClass('row-hidden');
             }
-        })
+        });
+        $('table.report').addClass('table table-bordered');
+        $('form').addClass('class="well"');
+        $('.result-collapsable').addClass('btn btn-mini');
+        $('button').each(function (i, button) {
+            $(button).addClass('btn');
+            if($(button).hasClass('query')) { $(button).addClass('btn-primary'); }
+            if($(button).hasClass('excel')) { $(button).addClass('btn-success'); }
+            if($(button).hasClass('pdf')) { $(button).addClass('btn-danger'); }
+            if($(button).hasClass('print')) { $(button).addClass('btn-warning'); }
+        });
+
     });
   </script>
-  <style type="text/css">
+    <style type="text/css">
       .row-hidden {
         display: none;
       }
+      .date_range {
+        clear: left !important;
+      }
+      .help-text {
+        display: block;
+        font-size: 11px;
+        max-width: 220px;
+        text-align: justify;
+        }
     </style>
 {% endblock %}
 
+
+{% block sidebar %}
+{% include "model_report/includes/report_nav.html" %}
+{% endblock %}
+
+{% block container %}
+<ul class="breadcrumb">
+    <li><a href="/">{% trans "Report list" %}</a> <span class="divider">/</span></li>
+    <li class="active">{{ report.get_title }}</li>
+</ul>
+{{ block.super }}
+{% endblock %}
 
 {% block content %}
 {% include "model_report/includes/report_title.html" %}
